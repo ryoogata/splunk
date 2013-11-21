@@ -11,6 +11,12 @@ when "ubuntu"
 end
 
 
+# Splunk App for AWS の設置
+remote_file "/tmp/SplunkAppforAWS.spl" do
+	source "https://s3-us-west-1.amazonaws.com/us-west-1.yggdrasillnetwork.net/rpm/SplunkAppforAWS.spl"
+end
+
+
 # 必要なパッケージのインストール
 case node['platform']
 when "ubuntu"
@@ -37,6 +43,7 @@ end
 execute "boot-start" do
         command "/opt/splunk/bin/splunk enable boot-start --answer-yes"
 end
+
 
 # splunk の起動
 service "splunk" do
