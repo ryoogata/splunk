@@ -26,11 +26,17 @@ describe "SplunkSelenium" do
     @driver.find_element(:id, "password").send_keys "changeme"
     @driver.find_element(:css, "input.splButton-primary").click
     @driver.find_element(:id, "newpassword").clear
-    @driver.find_element(:id, "newpassword").send_keys "<%= node["splunk"]["_LOGINPASSWORD"] %>"
+    @driver.find_element(:id, "newpassword").send_keys "password"
     @driver.find_element(:id, "confirmpassword").clear
-    @driver.find_element(:id, "confirmpassword").send_keys "<%= node["splunk"]["_LOGINPASSWORD"] %>"
+    @driver.find_element(:id, "confirmpassword").send_keys "password"
     @driver.find_element(:css, "button.splButton-primary.save-pass-button").click
+    sleep 10
     @driver.find_element(:css, "button.close").click
+    @driver.find_element(:xpath, "(//a[contains(text(),'Manage Apps')])[2]").click
+    sleep 10
+    @driver.find_element(:css, "a.splButton-secondary > span").click
+    @driver.find_element(:id, "appfile").send_keys "/tmp/SplunkAppforAWS.spl"
+    @driver.find_element(:css, "button.splButton-primary").click
   end
 
   def element_present?(how, what)
