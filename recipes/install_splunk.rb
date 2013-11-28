@@ -1,19 +1,19 @@
 # 必要なパッケージの設置
 case node['platform']
 when "centos"
-	remote_file "/tmp/splunk-6.0-182037-linux-2.6-x86_64.rpm" do
-		source "https://s3-us-west-1.amazonaws.com/us-west-1.yggdrasillnetwork.net/rpm/splunk-6.0-182037-linux-2.6-x86_64.rpm"
+	remote_file "/tmp/splunk.rpm" do
+		source "#{node['splunk']['_DOWNLOAD_URL']['SPLUNK_RPM']}"
 	end
 when "ubuntu"
-	remote_file "/tmp/splunk-6.0-182037-linux-2.6-amd64.deb" do
-		source "https://s3-us-west-1.amazonaws.com/us-west-1.yggdrasillnetwork.net/rpm/splunk-6.0-182037-linux-2.6-amd64.deb"
+	remote_file "/tmp/splunk.deb" do
+		source "#{node['splunk']['_DOWNLOAD_URL']['SPLUNK_DEB']}"
 	end
 end
 
 
 # Splunk App for AWS の設置
 remote_file "/tmp/SplunkAppforAWS.spl" do
-	source "https://s3-us-west-1.amazonaws.com/us-west-1.yggdrasillnetwork.net/rpm/SplunkAppforAWS.spl"
+	source "#{node['splunk']['_DOWNLOAD_URL']['SPLUNKAPPFORAWS']}"
 end
 
 
@@ -22,12 +22,12 @@ case node['platform']
 when "ubuntu"
 	dpkg_package "splunk" do
 		action :install
-		source "/tmp/splunk-6.0-182037-linux-2.6-amd64.deb"
+		source "/tmp/splunk.deb"
 	end
 when "centos"
 	package "splunk" do
 		action :install
-		source "/tmp/splunk-6.0-182037-linux-2.6-x86_64.rpm"
+		source "/tmp/splunk.rpm"
 		provider Chef::Provider::Package::Rpm
 	end
 end
@@ -49,13 +49,4 @@ end
 service "splunk" do
 	supports :status => true, :restart => true, :reload => true
 	action [ :enable, :start ]
-end
-
-
-# splunk の初期化を Selenium で自動化する為のコードを設置
-template "/tmp/init_setup_splunk.rb" do
-        source "init_setup_splunk.rb"
-        variables(
-                :loginpassword => node["splunk"]["_LOGINPASSWORD"]
-        )
 end
