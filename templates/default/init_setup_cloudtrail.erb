@@ -31,7 +31,7 @@ describe "SetupCloudtrail" do
     @driver.find_element(:xpath, "(//a[contains(text(),'新規追加')])[5]").click
     # Name ID
     @driver.find_element(:id, "name_id").clear
-    @driver.find_element(:id, "name_id").send_keys "<%= ["splunkappforaws"]["_NAME"]%>"
+    @driver.find_element(:id, "name_id").send_keys "<%= node["splunkappforaws"]["_NAME"]%>"
     # AWS Key ID    
     @driver.find_element(:id, "key_id_id").clear
     @driver.find_element(:id, "key_id_id").send_keys "<%= node["aws"]["_ACCESS_KEY"]%>"
