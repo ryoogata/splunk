@@ -1,0 +1,82 @@
+require "json"
+require "selenium-webdriver"
+require "rspec"
+include RSpec::Expectations
+
+describe "SetupCloudtrail" do
+
+  before(:each) do
+    @driver = Selenium::WebDriver.for  :remote, :url => "http://localhost:4444/wd/hub", :desired_capabilities => :firefox
+    @base_url = "http://localhost:8000/"
+    @accept_next_alert = true
+    @driver.manage.timeouts.implicit_wait = 30
+    @verification_errors = []
+  end
+  
+  after(:each) do
+    @driver.quit
+    @verification_errors.should == []
+  end
+  
+  it "test_setup_cloudtrail" do
+    @driver.get(@base_url + "/ja-JP/account/login?return_to=%2Fja-JP%2F")
+    @driver.find_element(:id, "username").clear
+    @driver.find_element(:id, "username").send_keys "admin"
+    @driver.find_element(:id, "password").clear
+    @driver.find_element(:id, "password").send_keys "<%= node["splunk"]["_LOGINPASSWORD"]%>"
+    @driver.find_element(:css, "input.splButton-primary").click
+    @driver.find_element(:css, "h2.section-title").click
+    sleep 10
+    @driver.find_element(:link, "Manage Inputs").click
+    @driver.find_element(:xpath, "(//a[contains(text(),'新規追加')])[5]").click
+    # Name ID
+    @driver.find_element(:id, "name_id").clear
+    @driver.find_element(:id, "name_id").send_keys "<%= ["splunkappforaws"]["_NAME"]%>"
+    # AWS Key ID    
+    @driver.find_element(:id, "key_id_id").clear
+    @driver.find_element(:id, "key_id_id").send_keys "<%= node["aws"]["_ACCESS_KEY"]%>"
+    # AWS Secret Key
+    @driver.find_element(:id, "secret_key_id").clear
+    @driver.find_element(:id, "secret_key_id").send_keys "<%= node["aws"]["_SECRET_KEY"]%>"
+    # SQS Queue Name
+    @driver.find_element(:id, "sqs_queue_id").clear
+    @driver.find_element(:id, "sqs_queue_id").send_keys "<%= node["aws"]["sqs"]["_SQS_QUEUE"]%>"
+    # SQS Queue Region
+    @driver.find_element(:id, "sqs_queue_region_id").clear
+    @driver.find_element(:id, "sqs_queue_region_id").send_keys "<%= node["aws"]["sqs"]["_SQS_QUEUE_REGION"]%>"
+    @driver.find_element(:css, "button.splButton-primary").click
+  end
+  
+  def element_present?(how, what)
+    @driver.find_element(how, what)
+    true
+  rescue Selenium::WebDriver::Error::NoSuchElementError
+    false
+  end
+  
+  def alert_present?()
+    @driver.switch_to.alert
+    true
+  rescue Selenium::WebDriver::Error::NoAlertPresentError
+    false
+  end
+  
+  def verify(&blk)
+    yield
+  rescue ExpectationNotMetError => ex
+    @verification_errors << ex
+  end
+  
+  def close_alert_and_get_its_text(how, what)
+    alert = @driver.switch_to().alert()
+    alert_text = alert.text
+    if (@accept_next_alert) then
+      alert.accept()
+    else
+      alert.dismiss()
+    end
+    alert_text
+  ensure
+    @accept_next_alert = true
+  end
+end
