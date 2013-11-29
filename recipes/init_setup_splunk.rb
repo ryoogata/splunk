@@ -1,6 +1,6 @@
 # splunk の初期化を Selenium で自動化する為のコードを設置
 template "/tmp/init_setup_splunk.rb" do
-	source "init_setup_splunk.rb"
+	source "init_setup_splunk.erb"
 	variables(
 		:loginpassword => node["splunk"]["_LOGINPASSWORD"]
 	)
