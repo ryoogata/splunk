@@ -24,20 +24,20 @@ attribute "splunk",
 attribute "splunk/_DOWNLOAD_URL/SPLUNK_RPM",
   :display_name => "Splunk RPM Download URL",
   :description =>
-    "Splunk RPM Download URL"
+    "Splunk RPM Download URL",
   :required = "required",
   :recipes => ["splunk::install_splunk"]
 
 attribute "splunk/_DOWNLOAD_URL/SPLUNK_DEB",
   :display_name => "Splunk DEB Download URL",
   :description =>
-    "Splunk DEB Download URL"
+    "Splunk DEB Download URL",
   :required = "optional",
   :recipes => ["splunk::install_splunk"]
 
 attribute "splunk/_DOWNLOAD_URL/SPLUNKAPPFORAWS",
   :display_name => "Splunk App for AWS Download URL",
   :description =>
-    "Splunk App for AWS Download URL"
+    "Splunk App for AWS Download URL",
   :required = "optional",
   :recipes => ["splunk::install_splunk"]
