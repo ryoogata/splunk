@@ -10,13 +10,6 @@ when "ubuntu"
   end
 end
 
-
-# Splunk App for AWS の設置
-remote_file "/tmp/SplunkAppforAWS.spl" do
-	source "#{node['splunk']['_DOWNLOAD_URL']['SPLUNKAPPFORAWS']}"
-end
-
-
 # 必要なパッケージのインストール
 case node['platform']
 when "ubuntu"
