@@ -1,6 +1,6 @@
 # 必要なパッケージの設置
 case node['platform']
-when "centos"
+when "centos","amazon"
   remote_file "/tmp/splunk.rpm" do
     source "#{node['splunk']['_DOWNLOAD_URL']['SPLUNK_RPM']}"
   end
