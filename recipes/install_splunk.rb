@@ -17,7 +17,7 @@ when "ubuntu"
     action :install
     source "/tmp/splunk.deb"
   end
-when "centos"
+when "centos","amazon"
   package "splunk" do
     action :install
     source "/tmp/splunk.rpm"

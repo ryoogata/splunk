@@ -4,7 +4,7 @@ maintainer_email 'YOUR_EMAIL'
 license          'All rights reserved'
 description      'Installs/Configures splunk'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.2.0'
+version          '0.2.1'
 
 supports "centos"
 supports "ubuntu"
@@ -14,6 +14,12 @@ supports "ubuntu"
 
 recipe "splunk::install_splunk",
   "Install splunk"
+
+recipe "splunk::init_setup_splunk",
+  "Initialize setup splunk"
+
+recipe "splunk::init_setup_cloudtrail",
+  "Initialize setup cloudtrail"
 
 # == Attributes
 #
