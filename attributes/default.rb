@@ -1,11 +1,10 @@
 default["splunk"]["_LOGINPASSWORD"] = ""
 default["splunk"]["_DOWNLOAD_URL"]["SPLUNK_RPM"] = ""
 default["splunk"]["_DOWNLOAD_URL"]["SPLUNK_DEB"] = ""
-default["splunk"]["_DOWNLOAD_URL"]["SPLUNKAPPFORAWS"] = ""
+default['splunk']['_DOWNLOAD_URL']['FORWARDER_RPM'] = ""
+default['splunk']['_DOWNLOAD_URL']['FORWARDER_DEB'] = ""
 
-default["splunkappforaws"]["_NAME"] = "MyCloudTrail"
-
-default["aws"]["_ACCESS_KEY"] = ""
-default["aws"]["_SECRET_KEY"] = ""
-default["aws"]["sqs"]["_SQS_QUEUE"] = ""
-default["aws"]["sqs"]["_SQS_QUEUE_REGION"] = "us-east-1"
+default["splunk"]["forwarder"]["password"] = ""
+default["splunk"]["forwarder"]["forward_server_host"] = ""
+default["splunk"]["forwarder"]["forward_server_port"] = ""
+default["splunk"]["forwarder"]["monitor"] = []
