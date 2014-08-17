@@ -16,23 +16,21 @@ when "ubuntu"
   dpkg_package "splunk" do
     action :install
     source "/tmp/splunk.deb"
+    notifies :run, "execute[boot-start]", :immediately
   end
 when "centos","amazon"
   package "splunk" do
     action :install
     source "/tmp/splunk.rpm"
     provider Chef::Provider::Package::Rpm
+    notifies :run, "execute[boot-start]", :immediately
   end
-end
-
-# license-eula.txt の削除
-file "/opt/splunk/license-eula.txt" do
-  action :delete
 end
 
 # splunk の初期化
 execute "boot-start" do
-  command "/opt/splunk/bin/splunk enable boot-start --answer-yes"
+  command "/opt/splunk/bin/splunk enable boot-start --accept-license"
+  action :nothing
 end
 
 # splunk の起動
